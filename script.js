@@ -1,11 +1,18 @@
+let city=document.getElementById('cityName');
+let tempertatue=document.getElementById('temperature');
+let feelsLike=document.getElementById('feelsLike');
+let description=document.getElementById('description');
+let icon=document.getElementById('icon');
+
+
 
 async function getWeatherData(){
     
     let response= await fetch("http://api.openweathermap.org/data/2.5/weather?q=cairo&APPID=068d23d9fa379d316035082989e6bf18");
     let obj=await response.json();
 
-    console.log(obj.main.feels_like);
-    console.log(obj);
+    // console.log(obj.main.feels_like);
+    //  console.log(obj);
     // if(obj.cod==404)
     //     throw Error('city not found');
 
@@ -17,10 +24,12 @@ async function getWeatherData(){
 // })
 
 getWeatherData().then(respone=>{
-   console.log(processData(respone));
+ let obj= processData(respone);
+ toDom(obj);
 })
+    
 
-function processData(obj){
+  function processData(obj){
     let processedObj={
          cityName :obj.name,
          feelsLike:obj.main.feels_like,
@@ -32,4 +41,12 @@ function processData(obj){
     return processedObj;
     
 }
-// console.log(processData(getWeatherData()))
+
+function toDom(obj){
+
+    city.textContent=obj.cityName;
+    tempertatue.textContent=obj.temp;
+    feelsLike.textContent=`Feels like : ${obj.feelsLike}`;
+    description.textContent=obj.description;
+    icon.src=`http://openweathermap.org/img/w/${obj.icon}.png`;
+}
