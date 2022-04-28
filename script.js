@@ -3,31 +3,43 @@ let tempertatue=document.getElementById('temperature');
 let feelsLike=document.getElementById('feelsLike');
 let description=document.getElementById('description');
 let icon=document.getElementById('icon');
+const searchBtn=document.getElementById('search-btn');
 
 
-
-async function getWeatherData(){
+searchBtn.addEventListener('click',async(e)=>{
+    e.preventDefault();
+    let city=getCity();
+    if (city === "") return;
+    toDom(await getWeatherData(city));
+       
     
-    let response= await fetch("http://api.openweathermap.org/data/2.5/weather?q=cairo&APPID=068d23d9fa379d316035082989e6bf18");
-    let obj=await response.json();
+})
 
-    // console.log(obj.main.feels_like);
-    //  console.log(obj);
-    // if(obj.cod==404)
-    //     throw Error('city not found');
+
+
+function getCity(){
+    const city=document.getElementById('search-form').search;
+    return city.value;
+}
+
+
+
+
+async function getWeatherData(city){
+    
+    let response= await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=068d23d9fa379d316035082989e6bf18`);
+    try{
+    if (!response.ok) throw new Error(`City ${city} not found`);
+    const obj=processData(await response.json());
+    console.log(obj);
 
     return obj;
 }
-// getWeatherData().catch((obj)=>{
-//     if (obj.cod==404)
-//     console.error("invalid parameter");
-// })
+    catch(err){
+        alert(err);
+    }
 
-getWeatherData().then(respone=>{
- let obj= processData(respone);
- toDom(obj);
-})
-    
+}
 
   function processData(obj){
     let processedObj={
@@ -45,8 +57,8 @@ getWeatherData().then(respone=>{
 function toDom(obj){
 
     city.textContent=obj.cityName;
-    tempertatue.textContent=obj.temp;
-    feelsLike.textContent=`Feels like : ${obj.feelsLike}`;
+    tempertatue.textContent=`${obj.temp} °C`;
+    feelsLike.textContent=`Feels like : ${obj.feelsLike} °C`;
     description.textContent=obj.description;
-    icon.src=`http://openweathermap.org/img/w/${obj.icon}.png`;
+    icon.src=`http://openweathermap.org/img/w/${obj.icon}.png `;
 }
