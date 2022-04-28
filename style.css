@@ -1,0 +1,12 @@
+body{
+    background-image:url('/img.jpeg');
+    background-repeat: no-repeat;
+    background-size:cover;
+    
+}
+.temp-card{
+    color: whitesmoke;
+    font-size: 1.8rem;
+    font-family: "Roboto",sans-serif;
+    margin-left: 100px;
+}
