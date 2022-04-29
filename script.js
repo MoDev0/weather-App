@@ -27,7 +27,7 @@ function getCity(){
 
 async function getWeatherData(city){
     
-    let response= await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=068d23d9fa379d316035082989e6bf18`);
+    let response= await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=068d23d9fa379d316035082989e6bf18`,{mode:"cors"});
     try{
     if (!response.ok) throw new Error(`City ${city} not found`);
     const obj=processData(await response.json());
